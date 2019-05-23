@@ -1,0 +1,99 @@
+﻿<?php
+
+	class DBFactory
+	{
+		public static function getDB($typeBD, $dbName, $host, $user, $pwd)
+		{
+			if($typeBD == "mysql")
+			{
+				//$laDB = new PDO("mysql:host=$host;dbname=$dbName", $user, $pwd);
+                //On test d'abord la présence de MySQL et de la validité du user et password
+                try{
+                    $laDB = new PDO( "mysql:host=$host", $user, $pwd );
+                }
+                catch(PDOException $e) {
+                    //Il faut passer par une variable temporaire pour sortir le message en UTF-8
+                    //$message = $e->getMessage();
+                    die("MySQL n'est pas en fonction ou vous n'êtes pas autoriser à vous connecter à la base de donnée avec ce nom de connection.<br>");
+                }
+                //En suite on test la présence de la base de donnée
+                //****************Inutile sous WEEBDEV******************
+                $sqlDB = "USE " . DATABASE;
+                $dbExist = $laDB->exec($sqlDB);
+                if($dbExist === FALSE) {
+                    //$message = $e->getMessage();
+                    $sqlDB2 = "CREATE SCHEMA " . DATABASE;
+                    $laDB->exec($sqlDB2);
+                    $laDB->exec($sqlDB);
+                    //****************Insérer le nom du ficher contenant la requête voulu***********
+                    $fichier = 'model/createTableTest.sql';
+                    if($fichierSQL = fopen($fichier,"r")){
+                        $sqlCreateTable = "";
+                        //***** Les deux fonctionnent****
+                        //V1
+                        $sqlCreateTable = file_get_contents($fichier);
+                        //V2
+                            //while (!feof($fichierSQL)){
+                                //$sqlCreateTable .= fgets($fichierSQL,9999);
+                            //}
+                            //fclose($fichierSQL);
+                        try{
+                            $laDB->exec($sqlCreateTable);
+                            echo("La base de donnée a été créée pour une première utilisation.<br>");
+                        }
+                        catch(PDOException $e) {
+                            echo $e->getMessage();
+                        }
+                    }
+                    else{
+                        echo("Le fichier $fichier n'a pas été trouvé.<br>");
+                    }
+                }
+			}
+			else if($typeBD == "oracle")
+			{
+				$laDB = new PDO("oci:host=$host;dbname=$dbName", $user, $pwd);		
+			}
+			else
+				trigger_error("Le type de BD spécifié n'est pas supporté.");
+			//else if...
+			
+			$laDB->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+			$laDB->exec("SET NAMES 'utf8'");
+			return $laDB;			
+		}
+
+		private static function makeDB($objPDO){
+
+        //**************************************************************************
+        //Toute cette section ne peut pas fonctionner avec webdev car on doit créer la base de donnée avec PhpMyAdmin via le web.
+        //**************************************************************************
+            if(!WEBDEV){
+                //Est-ce que la base de données existe? Si non, on essai de créer la base de donnée vierge.
+                $connectDatabase = @mysqli_connect($dbHost, $dbUtilisateur, $dbPassword);
+                if (!@mysqli_connect($dbHost, $dbUtilisateur, $dbPassword, $dbNom)) {
+                    // Creation de la base de donnée en UTF8 si on a une erreur de connection
+                    $sqlCreateDatabase = "CREATE DATABASE " . $dbNom . " CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci";
+                    //Si la création réussi alors on crée les tables
+                    if (@mysqli_query($connectDatabase, $sqlCreateDatabase)) {
+                        //On a créé une fonction externe car le code était long. On garde fonctionDB.php plus lisible.
+                        //Ça permet de modifier le nom de la base en fonction de l'étudiant facilement
+                        require_once("createTable.php");
+                        createTable($dbHost, $dbUtilisateur, $dbPassword, $dbNom);
+                        //On fait un popup en javascript pour annoncé la création de la base la première fois
+                        $message = "Nous avons initialisé le système pour la première utilisation. ";
+                        $message = $message . "La base de données a été créé avec un grand succès. ";
+                        $message = $message . "Veuillez créer votre premier utilisateur. Bienvenue!";
+                        echo "<script type='text/javascript'>alert('$message');</script>";
+                    }
+                    else {
+                        echo "Erreur de création de la base de donnée: " . mysqli_error($connectDatabase);
+                        die();
+                    }
+                }
+            }
+        }
+	}
+	
+?>
+

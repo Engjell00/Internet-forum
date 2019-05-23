@@ -1,0 +1,55 @@
+/* CSS - Cascading Style Sheet */
+/*couleur fond : #F5EAE4;
+couleur H1 background: #D7CDC7; (GRAIN)
+couleurParagarphe: #565656; (BLACKBOARD)
+couleurTitre:#76323F; (OXBLOOD)
+couleurBoite:#C09F80; (TAN)
+Couleur fond new look Registre : #79a4db (bleu ciel)
+*/
+html{
+    color:black;
+}
+body{
+    height: 100%;
+    background: linear-gradient(#79a4db, white);
+    /*background: linear-gradient(#D7CDC7, white);*/
+    /*Permet de ne pas répéter le background dégradé*/
+    /*background-repeat: no-repeat;*/
+    /*Encore mieux.. la position de la ligne après le définition du gradient est importante*/
+    background-attachment: fixed;
+}
+
+h1, h2, h3, h4
+{
+   font-size: 1em;
+   color: #76323F;
+   font-family: Arial, Helvetica, sans-serif; 
+}
+h1 {
+    font-size: 1.5em;
+    color: #76323F;
+    background-color: rgba(0, 0, 0, .125);
+}
+h2 {
+    color:black;
+    font-size: 1.2em;
+    /*background-color: #C09F80;*/
+    background-color: rgba(0, 0, 0, .125);
+}
+h3 {
+    color: #152C55;
+}
+h4 {
+    color: white;
+    background-color: #051838;
+}
+p{
+    color:#565656;
+}
+#javascriptInfoUsername{
+    color: red;
+}
+input[type="submit"] {
+    background-color: #307bdb;
+
+}

@@ -1,0 +1,55 @@
+.tableSujet {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 95%;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: #79a4db;
+}
+
+.tableSujet td, .tableSujet th {
+    border: 1px solid #a5a5a5;
+    text-align: left;
+    padding: 8px;
+    vertical-align:top;
+}
+
+.tableSujet tr:nth-child(even) {
+    background-color: #dddddd;
+}
+.tableSujet td a{
+    /*Envoi le modifier à droite*/
+    /*mais modifier en PHP*/
+    /*float: right;*/
+    /*background-color: #dd092b;*/
+}
+.tableAdmin {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 85%;
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: #79a4db;
+}
+
+.tableAdmin td, .tableAdmin th {
+    border: 1px solid #a5a5a5;
+    text-align: center;
+    padding: 8px;
+    vertical-align:top;
+}
+.tableAdmin tr:first-of-type{
+    border: 2px solid black;
+    border-radius: 10px;
+    background-color: #307bdb;
+}
+.tableAdmin tr:nth-child(even) {
+    background-color: #dddddd;
+}
+.divAdmin input[type="submit"]{
+    display: block;
+    margin: 0 auto;
+    cursor:pointer;
+}
